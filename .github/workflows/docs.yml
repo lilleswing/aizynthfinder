@@ -18,10 +18,3 @@ jobs:
         mamba env create -f env-dev.yml
         conda run --name aizynth-dev poetry install -E all
         conda run --name aizynth-dev inv build-docs
-    - name: deploy
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/build/html
-        publish_branch: gh-pages
-        force_orphan: true
