@@ -36,7 +36,7 @@ if TYPE_CHECKING:
 class PrecursorScorer(Scorer):
     """Class for scoring nodes based on the state score"""
 
-    scorer_name = "precursor scorer"
+    scorer_name = "precursor score"
 
     def __init__(
             self, config: Configuration, scaler_params: Optional[StrDict] = None,
@@ -57,8 +57,6 @@ class PrecursorScorer(Scorer):
         # A scorer can return a list of float if the item is a list of trees/nodes,
         # but that is not the case here. However this is needed because of mypy
         assert isinstance(in_stock_fraction, float) and isinstance(max_transform, float)
-
-        mol.inchi_key
         return 0.95 * in_stock_fraction + 0.05 * max_transform
 
     def _score_node(self, node: MctsNode) -> float:
