@@ -50,6 +50,7 @@ class PrecursorScorer(Scorer):
             scaler_params={"name": "squash", "slope": -1, "yoffset": 0, "xoffset": 4},
         )
         self._in_stock_scorer = FractionInStockScorer(config)
+        self.precursor_inichikey = kwargs['inichi_key']
 
     def _score(self, item: _Scoreable) -> float:
         in_stock_fraction = self._in_stock_scorer(item)
@@ -57,6 +58,11 @@ class PrecursorScorer(Scorer):
         # A scorer can return a list of float if the item is a list of trees/nodes,
         # but that is not the case here. However this is needed because of mypy
         assert isinstance(in_stock_fraction, float) and isinstance(max_transform, float)
+        if isinstance(item, ReactionTree):
+            inichis = [x.inichi_key for x in item.molecules()]
+        else:
+            inichis = [x.inichi_key for x in item.state.mols]
+        print(inichis)
         return 0.95 * in_stock_fraction + 0.05 * max_transform
 
     def _score_node(self, node: MctsNode) -> float:
