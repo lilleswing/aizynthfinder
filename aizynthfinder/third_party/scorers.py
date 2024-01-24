@@ -50,7 +50,7 @@ class PrecursorScorer(Scorer):
             scaler_params={"name": "squash", "slope": -1, "yoffset": 0, "xoffset": 4},
         )
         self._in_stock_scorer = FractionInStockScorer(config)
-        self.precursor_inichikey = kwargs['inchi_key']
+        self.precursor_inchikey = kwargs['inchi_key']
 
     def _score(self, item: _Scoreable) -> float:
         in_stock_fraction = self._in_stock_scorer(item)
@@ -62,8 +62,8 @@ class PrecursorScorer(Scorer):
             inichis = [x.inchi_key for x in item.molecules()]
         else:
             inichis = [x.inchi_key for x in item.state.mols]
-        print(inichis)
-        return 0.95 * in_stock_fraction + 0.05 * max_transform
+        has_precursor = int(self.precursor_inchikey in inichis)
+        return 0.76 * in_stock_fraction + 0.04 * max_transform + has_precursor
 
     def _score_node(self, node: MctsNode) -> float:
         return self._score(node)
