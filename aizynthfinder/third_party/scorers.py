@@ -13,7 +13,7 @@ from aizynthfinder.context.stock import StockException
 from aizynthfinder.reactiontree import ReactionTree
 from aizynthfinder.search.mcts import MctsNode
 from aizynthfinder.utils.exceptions import ScorerException
-from aizynthfinder.context.scoring.scorers import Scorer, Configuration, FractionInStockScorer, MaxTransformScorerer
+from aizynthfinder.context.scoring.scorers import Scorer, FractionInStockScorer, MaxTransformScorerer
 
 if TYPE_CHECKING:
     from aizynthfinder.chem import FixedRetroReaction, Molecule, RetroReaction
@@ -57,6 +57,8 @@ class PrecursorScorer(Scorer):
         # A scorer can return a list of float if the item is a list of trees/nodes,
         # but that is not the case here. However this is needed because of mypy
         assert isinstance(in_stock_fraction, float) and isinstance(max_transform, float)
+
+        mol.inchi_key
         return 0.95 * in_stock_fraction + 0.05 * max_transform
 
     def _score_node(self, node: MctsNode) -> float:
