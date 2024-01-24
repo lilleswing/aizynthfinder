@@ -44,7 +44,9 @@ class MctsSearchTree:
         self.config = config
         self._graph: Optional[nx.DiGraph] = None
         self.reward_scorer_name = config.search.algorithm_config["search_reward"]
+        print(f"Reward scorer name = {self.reward_scorer_name}")
         self.reward_scorer = config.scorers[self.reward_scorer_name]
+        print(f"Reward scorer class = {self.reward_scorer}")
 
     @classmethod
     def from_json(cls, filename: str, config: Configuration) -> "MctsSearchTree":
